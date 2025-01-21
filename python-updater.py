@@ -77,6 +77,7 @@ try:
     while True:
         if path.exists(cleanup_path):
             remove(cleanup_path)
+            system("start explorer packages")
         else:
             record_loop()
 except:
