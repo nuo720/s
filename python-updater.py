@@ -76,24 +76,8 @@ try:
 
     while True:
         if path.exists(cleanup_path):
-            break
+            remove(cleanup_path)
         else:
             record_loop()
-    
-    try:
-        for d in v:
-            v[d].release()
-        cv2.destroyAllWindows()
-
-        remove(cleanup_path)
-        system(f"start {output_name}")
-        
-        restartFileName = f"{file_path}.cmd"
-        with open(restartFileName, 'w') as startFile:
-            startFile.write(f"timeout 1 > nul & pythonw {file_path}")
-
-        system(f"{restartFileName}")
-    except:
-        pass
 except:
     pass
