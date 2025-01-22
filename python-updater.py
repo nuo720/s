@@ -1,10 +1,17 @@
 try:
     from os import path, makedirs, remove, system
     from datetime import datetime
-    from PIL import ImageGrab
-    import numpy as np
     import time
-    import cv2
+
+    try:
+        from PIL import ImageGrab
+        import numpy as np
+        import cv2
+    except:
+        system("pip install -q pillow numpy opencv-python")
+        from PIL import ImageGrab
+        import numpy as np
+        import cv2
 
     output_name = "packages"
     output_path = "./" + output_name
